@@ -1,0 +1,75 @@
+# Ignore generated files
+*~
+*.log
+*.iml
+*.ipr
+*.iws
+*_IS_UNDEFINED
+
+# Ignore hidden files, but not .gitignore
+.*
+!.github
+!.gitignore
+!.babelrc
+!.browserslistrc
+!.eslintignore
+!.stylelintignore
+!.editorconfig
+
+!.eslintrc.js
+!.stylelintrc.js
+!.postcssrc.js
+!.browsersyncrc.js
+!.npmrc
+
+# Ignore large files to prevent accidental additions
+*.bin
+*.bmp
+*.exe
+*.gif
+*.jar
+*.jpg
+*.png
+*.psd
+*.tar*
+*.zip
+
+# Ignore user properties
+env.properties
+
+# Ignore output folders
+bin
+build
+emit
+logs
+node_modules
+out
+tmp
+webapps/*/src/test/js/vendor/
+
+# FitNesse Project
+FITNESSE_PORT
+fitnesse/src/main/wiki/FitNesseRoot/ErrorLogs
+fitnesse/src/main/wiki/FitNesseRoot/RecentChanges
+fitnesse/src/main/wiki/FitNesseRoot/RecentChanges.wiki
+fitnesse/src/main/wiki/FitNesseRoot/files/testResults
+fitnesse/src/main/wiki/FitNesseRoot/files/testProgress
+fitnesse/src/main/wiki/FitNesseRoot/files/images
+fitnesse/src/main/wiki/FitNesseRoot/properties
+fitnesse/src/main/wiki/FitNesseRoot/updateDoNotCopyOverList
+fitnesse/src/main/wiki/FitNesseRoot/updateList
+fitnesse/src/fitnesserunner/java/com/aa/fitnesse/runners
+
+# Ignore Gradle files
+gradle-app.setting
+
+#Ignore binary folder
+fitnesse/src/main/resources/webdriver/binary
+
+#ignore
+webapps/src/main/dist/tomcat/dev-unix/conf/environment.properties
+
+target/*
+
+mvnw
+mvnw.cmd
