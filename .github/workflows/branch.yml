@@ -1,0 +1,35 @@
+#name: Non-Integration Branch - Build
+#
+#on:
+#  push:
+#    branches-ignore:
+#      - dev
+#      - stage
+#      - master
+#env:
+#  APPLICATION_NAME: [template-replace:servicename]
+#  BRANCH: ${{ github.ref_name }}
+#
+#jobs:
+#  buildSetup:
+#    name: Setup variables to use in Build Workflow
+#    runs-on: ubuntu-latest
+#    outputs:
+#      APPLICATION_NAME: ${{ env.APPLICATION_NAME }}
+#      BRANCH: ${{ env.BRANCH }}
+#    steps:
+#      - name: Setup values to call Build Reusable Workflow
+#        run: |
+#          echo Setting up parameters need to call Build Reusable workflow...
+#
+#  build:
+#    name: CI
+#    needs: [ buildSetup ]
+#    uses: AAInternal/checkout-payment-actions/.github/workflows/mavenBuild.yml@main
+#    with:
+#      APPLICATION_NAME: ${{ needs.buildSetup.outputs.APPLICATION_NAME }}
+#      BRANCH: ${{ needs.buildSetup.outputs.BRANCH }}
+#    secrets:
+#      AAINTERNAL_READONLY_PAT:  ${{ secrets.AAINTERNAL_READONLY_PAT }}
+#      ARTIFACTORY_CRED_USR:     ${{ secrets.ARTIFACTORY_CRED_USR }}
+#      ARTIFACTORY_CRED_PAT:     ${{ secrets.ARTIFACTORY_CRED_PAT }}

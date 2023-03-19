@@ -1,0 +1,70 @@
+#name: DEV - CI/CD
+#
+#on:
+#  push:
+#    branches:
+#      - dev
+#
+#env:
+#  APPLICATION_NAME: [template-replace:servicename]
+#  APPLICATION_PROFILE: qa
+#  BRANCH: ${{ github.ref_name }}
+#  IBM_CLOUD_GROUP: checkout-payment-nonprod-resgrp
+#  NUMBER_OF_PODS: 2
+#
+#jobs:
+#  buildSetup:
+#    name: Setup variables to use in Build Workflow
+#    runs-on: ubuntu-latest
+#    outputs:
+#      APPLICATION_NAME:         ${{ env.APPLICATION_NAME }}
+#      BRANCH:                   ${{ env.BRANCH }}
+#    steps:
+#      - name: Setup values to call Build Reusable Workflow
+#        run: |
+#          echo Setting up parameters need to call Build Reusable workflow...
+#
+#  build:
+#    name: CI
+#    needs: [ buildSetup ]
+#    uses: AAInternal/checkout-payment-actions/.github/workflows/mavenBuildAndPublish.yml@main
+#    with:
+#      APPLICATION_NAME:         ${{ needs.buildSetup.outputs.APPLICATION_NAME }}
+#      BRANCH:                   ${{ needs.buildSetup.outputs.BRANCH }}
+#    secrets:
+#      AAINTERNAL_READONLY_PAT:  ${{ secrets.AAINTERNAL_READONLY_PAT }}
+#      ARTIFACTORY_CRED_USR:     ${{ secrets.ARTIFACTORY_CRED_USR }}
+#      ARTIFACTORY_CRED_PAT:     ${{ secrets.ARTIFACTORY_CRED_PAT }}
+#
+#  deploySetup:
+#    name: Setup variables to use in Deploy Workflow
+#    runs-on: ubuntu-latest
+#    outputs:
+#      APPLICATION_PROFILE:      ${{ env.APPLICATION_PROFILE }}
+#      NUMBER_OF_PODS:           ${{ env.NUMBER_OF_PODS }}
+#      IBM_CLOUD_GROUP:          ${{ env.IBM_CLOUD_GROUP }}
+#    steps:
+#      - name: Setup values to call Deployment Reusable Workflow
+#        run: |
+#          echo Setting up parameters need to call Deploy Reusable workflow...
+#
+#  deploy:
+#    name: CD
+#    needs: [ buildSetup, build, deploySetup ]
+#    strategy:
+#      matrix:
+#        cluster: [ ecommerce-non-prod-cluster-dal ]
+#    uses: AAInternal/checkout-payment-actions/.github/workflows/deployDockerImageToIBMCloud.yml@main
+#    with:
+#      APPLICATION_NAME:         ${{ needs.buildSetup.outputs.APPLICATION_NAME }}
+#      BRANCH:                   ${{ needs.buildSetup.outputs.BRANCH }}
+#      APPLICATION_VERSION:      ${{ needs.build.outputs.APPLICATION_VERSION }}
+#      APPLICATION_PROFILE:      ${{ needs.deploySetup.outputs.APPLICATION_PROFILE }}
+#      NUMBER_OF_PODS:           ${{ needs.deploySetup.outputs.NUMBER_OF_PODS }}
+#      IBM_CLOUD_GROUP:          ${{ needs.deploySetup.outputs.IBM_CLOUD_GROUP }}
+#      CLUSTER:                  ${{ matrix.cluster }}
+#    secrets:
+#      AAINTERNAL_READONLY_PAT:  ${{ secrets.AAINTERNAL_READONLY_PAT }}
+#      ARTIFACTORY_CRED_USR:     ${{ secrets.ARTIFACTORY_CRED_USR }}
+#      ARTIFACTORY_CRED_PAT:     ${{ secrets.ARTIFACTORY_CRED_PAT }}
+#      IBM_API_KEY:              ${{ secrets.IBM_API_KEY }}
